@@ -14,7 +14,7 @@ export default class TodoApp extends Component {
           <TodoList todoItems={this.props.todoItems} />
         </section>
 
-        <TodoFooter></TodoFooter>
+        <TodoFooter todoItems={this.props.todoItems} />
       </section>
     );
   }
@@ -64,7 +64,7 @@ class TodoItem extends Component {
         <div className="view">
           <input className="toggle" type="checkbox" checked></input>
           <label>{this.props.description}</label>
-          <button className="destroy"></button>
+          <RemoveTodoItem />
         </div>
         <input className="edit" value="Create a TodoMVC template"></input>
       </li>
@@ -72,24 +72,59 @@ class TodoItem extends Component {
   }
 }
 
+class RemoveTodoItem extends Component {
+  render() {
+    return (
+      <button className="destroy"></button>
+    );
+  }
+}
+
 class TodoFooter extends Component {
+  pendingTodoItems(todoItems) {
+    var pendingTodoItems = [];
+    todoItems.forEach(function(todoItem) {
+      if (!todoItem.completed) {
+        pendingTodoItems.push(todoItem);
+      }
+    });
+
+    return pendingTodoItems;
+  }
+
   render() {
     return (
       <footer className="footer">
-        <span className="todo-count"><strong>0</strong> item left</span>
-        <ul className="filters">
-          <li>
-            <a className="selected" href="#/">All</a>
-          </li>
-          <li>
-            <a href="#/active">Active</a>
-          </li>
-          <li>
-            <a href="#/completed">Completed</a>
-          </li>
-        </ul>
-        <button className="clear-completed">Clear completed</button>
+        <span className="todo-count"><strong>{this.pendingTodoItems(this.props.todoItems).length}</strong> item left</span>
+        <TodoFilters />
+        <ClearCompleted />
       </footer>
+    );
+  }
+}
+
+class TodoFilters extends Component {
+  render() {
+    return (
+      <ul className="filters">
+        <li>
+          <a className="selected" href="#/">All</a>
+        </li>
+        <li>
+          <a href="#/active">Active</a>
+        </li>
+        <li>
+          <a href="#/completed">Completed</a>
+        </li>
+      </ul>
+    );
+  }
+}
+
+class ClearCompleted extends Component {
+  render() {
+    return (
+      <button className="clear-completed">Clear completed</button>
     );
   }
 }
