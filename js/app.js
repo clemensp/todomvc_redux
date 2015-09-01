@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-export default class App extends Component {
+export default class TodoApp extends Component {
   render() {
     return (
       <section className="todoapp">
@@ -11,7 +11,7 @@ export default class App extends Component {
 
         <section className="main">
           <ToggleAll></ToggleAll>
-          <TodoList></TodoList>
+          <TodoList todoItems={this.props.todoItems} />
         </section>
 
         <TodoFooter></TodoFooter>
@@ -41,25 +41,33 @@ class ToggleAll extends Component {
 
 class TodoList extends Component {
   render() {
+    var todoItems = [];
+
+    this.props.todoItems.forEach(function(todoItem) {
+      todoItems.push(
+        <TodoItem description={todoItem.description} completed={todoItem.completed} />
+      );
+    });
+
     return (
       <ul className="todo-list">
-        <li className="completed">
-          <div className="view">
-            <input className="toggle" type="checkbox" checked></input>
-            <label>Taste JavaScript</label>
-            <button className="destroy"></button>
-          </div>
-          <input className="edit" value="Create a TodoMVC template"></input>
-        </li>
-        <li>
-          <div className="view">
-            <input className="toggle" type="checkbox"></input>
-            <label>Buy a unicorn</label>
-            <button className="destroy"></button>
-          </div>
-          <input className="edit" value="Rule the web"></input>
-        </li>
+        { todoItems }
       </ul>
+    );
+  }
+}
+
+class TodoItem extends Component {
+  render() {
+    return (
+      <li className={this.props.completed ? "completed" : ""}>
+        <div className="view">
+          <input className="toggle" type="checkbox" checked></input>
+          <label>{this.props.description}</label>
+          <button className="destroy"></button>
+        </div>
+        <input className="edit" value="Create a TodoMVC template"></input>
+      </li>
     );
   }
 }

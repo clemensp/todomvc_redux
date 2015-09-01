@@ -1,4 +1,10 @@
 import React from 'react';
-import App from './App';
+import TodoApp from './App';
 
-React.render(<App />, document.getElementById('root'));
+var todoItems = [
+  { description: "todo1", completed: true },
+  { description: "todo2", completed: false },
+  { description: "todo3", completed: false }
+];
+
+React.render(<TodoApp todoItems={todoItems} />, document.getElementById('root'));
