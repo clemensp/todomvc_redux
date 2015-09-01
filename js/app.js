@@ -6,7 +6,7 @@ export default class App extends Component {
       <section className="todoapp">
         <header className="header">
           <h1>todos</h1>
-          <input className="new-todo" placeholder="What needs to be done?" autofocus></input>
+          <AddTodo></AddTodo>
         </header>
 
         <section className="main">
@@ -52,3 +52,10 @@ export default class App extends Component {
   }
 }
 
+class AddTodo extends Component {
+  render() {
+    return (
+      <input className="new-todo" placeholder="What needs to be done?" autofocus></input>
+    );
+  }
+}
