@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 export default class TodoApp extends Component {
   render() {
-    const { addItem } = this.props;
+    const { addItem, todoItems } = this.props;
 
     return (
       <section className="todoapp">
@@ -13,10 +13,10 @@ export default class TodoApp extends Component {
 
         <section className="main">
           <ToggleAll></ToggleAll>
-          <TodoList todoItems={this.props.todoItems} />
+          <TodoList todoItems={todoItems} />
         </section>
 
-        <TodoFooter todoItems={this.props.todoItems} />
+        <TodoFooter todoItems={todoItems} />
       </section>
     );
   }
