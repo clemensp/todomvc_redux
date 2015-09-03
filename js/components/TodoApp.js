@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 
 export default class TodoApp extends Component {
   render() {
+    const { addItem } = this.props;
+
     return (
       <section className="todoapp">
         <header className="header">
           <h1>todos</h1>
-          <AddTodo></AddTodo>
+          <AddTodo addItem={addItem}></AddTodo>
         </header>
 
         <section className="main">
@@ -21,9 +23,17 @@ export default class TodoApp extends Component {
 }
 
 class AddTodo extends Component {
+  invokeOnEnter(f) {
+    return function (e) {
+      if (e.key === 'Enter') {
+      f.call(null, e.target.value);
+      }
+    }
+  }
   render() {
+    const { addItem } = this.props;
     return (
-      <input className="new-todo" placeholder="What needs to be done?" autofocus></input>
+      <input className="new-todo" placeholder="What needs to be done?" autofocus onKeyDown={this.invokeOnEnter(addItem)}></input>
     );
   }
 }
