@@ -23,17 +23,20 @@ export default class TodoApp extends Component {
 }
 
 class AddTodo extends Component {
-  invokeOnEnter(f) {
-    return function (e) {
-      if (e.key === 'Enter') {
-      f.call(null, e.target.value);
-      }
-    }
-  }
   render() {
     const { addItem } = this.props;
+
+    var invokeAndClearOnEnter = f => {
+      return e => {
+        if (e.key === 'Enter') {
+          f.call(null, e.target.value);
+          React.findDOMNode(this.refs.text).value = '';
+        }
+      }
+    }
+
     return (
-      <input className="new-todo" placeholder="What needs to be done?" autofocus onKeyDown={this.invokeOnEnter(addItem)}></input>
+      <input className="new-todo" ref="text" placeholder="What needs to be done?" autofocus onKeyDown={invokeAndClearOnEnter(addItem)}></input>
     );
   }
 }
