@@ -4,7 +4,11 @@ import _ from 'lodash';
 export default function todoItems(state = [], action) {
   switch(action.type) {
     case ADD_ITEM:
-      return [...state, { description: action.description }];
+      if (action.description) {
+        return [...state, { description: action.description }];
+      } else {
+        return state;
+      }
     case TOGGLE_ITEM:
       return [
         ...state.slice(0, action.index),

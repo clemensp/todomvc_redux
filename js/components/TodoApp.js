@@ -29,7 +29,7 @@ class AddTodo extends Component {
 
     var invokeAndClearOnEnter = f => {
       return e => {
-        if (e.key === 'Enter' && e.target.value) {
+        if (e.key === 'Enter') {
           f.call(null, e.target.value);
           React.findDOMNode(this.refs.text).value = '';
         }
@@ -60,7 +60,7 @@ class TodoList extends Component {
 
     todoItems.forEach(function(todoItem, i) {
       todoItemRows.push(
-        <TodoItem description={todoItem.description} completed={todoItem.completed} toggleItem={_.partial(toggleItem, i)} removeItem={_.partial(removeItem, i)} />
+        <TodoItem key={todoItem.description} description={todoItem.description} completed={todoItem.completed} toggleItem={_.partial(toggleItem, i)} removeItem={_.partial(removeItem, i)} />
       );
     });
 
@@ -83,7 +83,7 @@ class TodoItem extends Component {
           <label>{description}</label>
           <RemoveTodoItem removeItem={removeItem} />
         </div>
-        <input className="edit" value="Create a TodoMVC template"></input>
+        <input className="edit" defaultValue={description}></input>
       </li>
     );
   }
