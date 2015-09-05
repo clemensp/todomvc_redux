@@ -12,12 +12,18 @@ export default class TodoApp extends Component {
           <AddTodo addItem={addItem}></AddTodo>
         </header>
 
-        <section className="main">
-          <ToggleAll></ToggleAll>
-          <TodoList todoItems={todoItems} toggleItem={toggleItem} removeItem={removeItem} />
-        </section>
+        {
+          todoItems.length ? 
+            <div>
+              <section className="main">
+                <ToggleAll></ToggleAll>
+                <TodoList todoItems={todoItems} toggleItem={toggleItem} removeItem={removeItem} />
+              </section>
 
-        <TodoFooter todoItems={todoItems} />
+              <TodoFooter todoItems={todoItems} />
+            </div>
+          : null
+        }
       </section>
     );
   }
