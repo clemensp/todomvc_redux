@@ -3,7 +3,7 @@ import _ from 'lodash';
 
 export default class TodoApp extends Component {
   render() {
-    const { addItem, toggleItem, todoItems } = this.props;
+    const { addItem, toggleItem, removeItem, todoItems } = this.props;
 
     return (
       <section className="todoapp">
@@ -14,7 +14,7 @@ export default class TodoApp extends Component {
 
         <section className="main">
           <ToggleAll></ToggleAll>
-          <TodoList todoItems={todoItems} toggleItem={toggleItem} />
+          <TodoList todoItems={todoItems} toggleItem={toggleItem} removeItem={removeItem} />
         </section>
 
         <TodoFooter todoItems={todoItems} />
@@ -55,18 +55,18 @@ class ToggleAll extends Component {
 
 class TodoList extends Component {
   render() {
-    const toggleItem = this.props.toggleItem;
-    const todoItems = [];
+    const { toggleItem, removeItem, todoItems } = this.props;
+    const todoItemRows = [];
 
-    this.props.todoItems.forEach(function(todoItem, i) {
-      todoItems.push(
-        <TodoItem description={todoItem.description} completed={todoItem.completed} toggleItem={_.partial(toggleItem, i)} />
+    todoItems.forEach(function(todoItem, i) {
+      todoItemRows.push(
+        <TodoItem description={todoItem.description} completed={todoItem.completed} toggleItem={_.partial(toggleItem, i)} removeItem={_.partial(removeItem, i)} />
       );
     });
 
     return (
       <ul className="todo-list">
-        { todoItems }
+        { todoItemRows }
       </ul>
     );
   }
@@ -74,14 +74,14 @@ class TodoList extends Component {
 
 class TodoItem extends Component {
   render() {
-    const { completed, description, toggleItem } = this.props;
+    const { completed, description, toggleItem, removeItem } = this.props;
 
     return (
       <li className={completed ? "completed" : ""}>
         <div className="view">
           <input className="toggle" type="checkbox" onChange={toggleItem}></input>
           <label>{description}</label>
-          <RemoveTodoItem />
+          <RemoveTodoItem removeItem={removeItem} />
         </div>
         <input className="edit" value="Create a TodoMVC template"></input>
       </li>
@@ -92,7 +92,7 @@ class TodoItem extends Component {
 class RemoveTodoItem extends Component {
   render() {
     return (
-      <button className="destroy"></button>
+      <button className="destroy" onClick={this.props.removeItem}></button>
     );
   }
 }
