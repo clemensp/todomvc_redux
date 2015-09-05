@@ -29,7 +29,7 @@ class AddTodo extends Component {
 
     var invokeAndClearOnEnter = f => {
       return e => {
-        if (e.key === 'Enter') {
+        if (e.key === 'Enter' && e.target.value) {
           f.call(null, e.target.value);
           React.findDOMNode(this.refs.text).value = '';
         }
