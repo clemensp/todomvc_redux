@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
+import _ from 'lodash';
 
 export default class TodoApp extends Component {
   render() {
-    const { addItem, todoItems } = this.props;
+    const { addItem, toggleItem, todoItems } = this.props;
 
     return (
       <section className="todoapp">
@@ -13,7 +14,7 @@ export default class TodoApp extends Component {
 
         <section className="main">
           <ToggleAll></ToggleAll>
-          <TodoList todoItems={todoItems} />
+          <TodoList todoItems={todoItems} toggleItem={toggleItem} />
         </section>
 
         <TodoFooter todoItems={todoItems} />
@@ -54,11 +55,12 @@ class ToggleAll extends Component {
 
 class TodoList extends Component {
   render() {
-    var todoItems = [];
+    const toggleItem = this.props.toggleItem;
+    const todoItems = [];
 
-    this.props.todoItems.forEach(function(todoItem) {
+    this.props.todoItems.forEach(function(todoItem, i) {
       todoItems.push(
-        <TodoItem description={todoItem.description} completed={todoItem.completed} />
+        <TodoItem description={todoItem.description} completed={todoItem.completed} toggleItem={_.partial(toggleItem, i)} />
       );
     });
 
@@ -72,11 +74,13 @@ class TodoList extends Component {
 
 class TodoItem extends Component {
   render() {
+    const { completed, description, toggleItem } = this.props;
+
     return (
-      <li className={this.props.completed ? "completed" : ""}>
+      <li className={completed ? "completed" : ""}>
         <div className="view">
-          <input className="toggle" type="checkbox" checked></input>
-          <label>{this.props.description}</label>
+          <input className="toggle" type="checkbox" onChange={toggleItem}></input>
+          <label>{description}</label>
           <RemoveTodoItem />
         </div>
         <input className="edit" value="Create a TodoMVC template"></input>
