@@ -43,7 +43,7 @@ class AddTodo extends Component {
     }
 
     return (
-      <input className="new-todo" ref="text" placeholder="What needs to be done?" autofocus onKeyDown={invokeAndClearOnEnter(addItem)}></input>
+      <input className="new-todo" ref="text" placeholder="What needs to be done?" autoFocus onKeyDown={invokeAndClearOnEnter(addItem)}></input>
     );
   }
 }
