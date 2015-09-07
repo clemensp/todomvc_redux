@@ -4,7 +4,7 @@ import classNames from 'classnames';
 
 export default class TodoApp extends Component {
   render() {
-    const { addItem, toggleItem, removeItem, todoItems, allItemsCompleted, toggleAllItems } = this.props;
+    const { addItem, toggleItem, removeItem, editItem, saveItem, todoItems, allItemsCompleted, toggleAllItems } = this.props;
 
     return (
       <section className="todoapp">
@@ -18,7 +18,7 @@ export default class TodoApp extends Component {
             <div>
               <section className="main">
                 <ToggleAll allItemsCompleted={allItemsCompleted} toggleAllItems={toggleAllItems}></ToggleAll>
-                <TodoList todoItems={todoItems} toggleItem={toggleItem} removeItem={removeItem} />
+                <TodoList todoItems={todoItems} toggleItem={toggleItem} removeItem={removeItem} editItem={editItem} saveItem={saveItem}/>
               </section>
 
               <TodoFooter todoItems={todoItems} />
@@ -64,12 +64,12 @@ class ToggleAll extends Component {
 
 class TodoList extends Component {
   render() {
-    const { toggleItem, removeItem, todoItems } = this.props;
+    const { toggleItem, removeItem, editItem, saveItem, todoItems } = this.props;
     const todoItemRows = [];
 
     todoItems.forEach(function(todoItem, i) {
       todoItemRows.push(
-        <TodoItem key={todoItem.description} mode={todoItem.mode} description={todoItem.description} completed={todoItem.completed} toggleItem={_.partial(toggleItem, i)} removeItem={_.partial(removeItem, i)} />
+        <TodoItem key={todoItem.description} mode={todoItem.mode} description={todoItem.description} completed={todoItem.completed} toggleItem={_.partial(toggleItem, i)} removeItem={_.partial(removeItem, i)} editItem={_.partial(editItem, i)} saveItem={_.partial(saveItem, i)} />
       );
     });
 
@@ -82,21 +82,32 @@ class TodoList extends Component {
 }
 
 class TodoItem extends Component {
+  componentDidUpdate() {
+    this.refs.edit.getDOMNode().focus(); 
+  }
   render() {
-    const { completed, description, toggleItem, removeItem, mode } = this.props;
+    const { completed, description, toggleItem, removeItem, editItem, saveItem, mode } = this.props;
     const classes = classNames({
       completed: completed,
       editing: mode === "edit"
     });
 
+    var invokeOnEnter = f => {
+      return e => {
+        if (e.key === 'Enter') {
+          f.call(null, e.target.value);
+        }
+      }
+    }
+
     return (
       <li className={classes}>
         <div className="view">
           <input className="toggle" type="checkbox" checked={completed} onChange={toggleItem}></input>
-          <label>{description}</label>
+          <label onDoubleClick={editItem}>{description}</label>
           <RemoveTodoItem removeItem={removeItem} />
         </div>
-        <input className="edit" defaultValue={description}></input>
+        <input className="edit" ref="edit" defaultValue={description} onKeyDown={invokeOnEnter(saveItem)}></input>
       </li>
     );
   }

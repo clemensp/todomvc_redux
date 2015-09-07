@@ -1,4 +1,4 @@
-import { ADD_ITEM, TOGGLE_ITEM, REMOVE_ITEM, TOGGLE_ALL_ITEMS } from '../actions/todo';
+import { ADD_ITEM, TOGGLE_ITEM, REMOVE_ITEM, EDIT_ITEM, SAVE_ITEM, TOGGLE_ALL_ITEMS } from '../actions/todo';
 import _ from 'lodash';
 
 export default function todoItems(state = [], action) {
@@ -18,6 +18,18 @@ export default function todoItems(state = [], action) {
     case REMOVE_ITEM:
       return [
         ...state.slice(0, action.index),
+        ...state.slice(action.index+1, state.length)
+      ];
+    case EDIT_ITEM:
+      return [
+        ...state.slice(0, action.index),
+        _.assign({}, state[action.index], { mode: "edit" }),
+        ...state.slice(action.index+1, state.length)
+      ];
+    case SAVE_ITEM:
+      return [
+        ...state.slice(0, action.index),
+        _.assign({}, state[action.index], { mode: "show", description: action.description }),
         ...state.slice(action.index+1, state.length)
       ];
     case TOGGLE_ALL_ITEMS:
