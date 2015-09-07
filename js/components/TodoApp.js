@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
+import classNames from 'classnames';
 
 export default class TodoApp extends Component {
   render() {
@@ -68,7 +69,7 @@ class TodoList extends Component {
 
     todoItems.forEach(function(todoItem, i) {
       todoItemRows.push(
-        <TodoItem key={todoItem.description} description={todoItem.description} completed={todoItem.completed} toggleItem={_.partial(toggleItem, i)} removeItem={_.partial(removeItem, i)} />
+        <TodoItem key={todoItem.description} mode={todoItem.mode} description={todoItem.description} completed={todoItem.completed} toggleItem={_.partial(toggleItem, i)} removeItem={_.partial(removeItem, i)} />
       );
     });
 
@@ -82,10 +83,14 @@ class TodoList extends Component {
 
 class TodoItem extends Component {
   render() {
-    const { completed, description, toggleItem, removeItem } = this.props;
+    const { completed, description, toggleItem, removeItem, mode } = this.props;
+    const classes = classNames({
+      completed: completed,
+      editing: mode === "edit"
+    });
 
     return (
-      <li className={completed ? "completed" : ""}>
+      <li className={classes}>
         <div className="view">
           <input className="toggle" type="checkbox" checked={completed} onChange={toggleItem}></input>
           <label>{description}</label>

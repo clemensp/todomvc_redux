@@ -5,7 +5,7 @@ export default function todoItems(state = [], action) {
   switch(action.type) {
     case ADD_ITEM:
       if (action.description.trim()) {
-        return [...state, { description: action.description }];
+        return [...state, { description: action.description, mode: "show" }];
       } else {
         return state;
       }
