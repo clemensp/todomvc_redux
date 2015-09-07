@@ -100,6 +100,12 @@ class TodoItem extends Component {
       }
     }
 
+    function invokeWithValue(f) {
+      return e => {
+        f.call(null, e.target.value);
+      }
+    }
+
     return (
       <li className={classes}>
         <div className="view">
@@ -107,7 +113,7 @@ class TodoItem extends Component {
           <label onDoubleClick={editItem}>{description}</label>
           <RemoveTodoItem removeItem={removeItem} />
         </div>
-        <input className="edit" ref="edit" defaultValue={description} onKeyDown={invokeOnEnter(saveItem)}></input>
+        <input className="edit" ref="edit" defaultValue={description} onKeyDown={invokeOnEnter(saveItem)} onBlur={invokeWithValue(saveItem)}></input>
       </li>
     );
   }
