@@ -3,6 +3,7 @@ export const TOGGLE_ITEM = 'TOGGLE_ITEM';
 export const REMOVE_ITEM = 'REMOVE_ITEM';
 export const EDIT_ITEM = 'EDIT_ITEM';
 export const SAVE_ITEM = 'SAVE_ITEM';
+export const CANCEL_EDIT = 'CANCEL_EDIT';
 export const TOGGLE_ALL_ITEMS = 'TOGGLE_ALL_ITEMS';
 
 export function addItem(description) {
@@ -22,6 +23,13 @@ export function toggleItem(index) {
 export function removeItem(index) {
   return {
     type: REMOVE_ITEM,
+    index
+  };
+}
+
+export function cancelEdit(index) {
+  return {
+    type: CANCEL_EDIT,
     index
   };
 }

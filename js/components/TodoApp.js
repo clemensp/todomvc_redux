@@ -4,7 +4,7 @@ import classNames from 'classnames';
 
 export default class TodoApp extends Component {
   render() {
-    const { addItem, toggleItem, removeItem, editItem, saveItem, todoItems, allItemsCompleted, toggleAllItems } = this.props;
+    const { addItem, toggleItem, removeItem, editItem, saveItem, cancelEdit, todoItems, allItemsCompleted, toggleAllItems } = this.props;
 
     return (
       <section className="todoapp">
@@ -18,7 +18,7 @@ export default class TodoApp extends Component {
             <div>
               <section className="main">
                 <ToggleAll allItemsCompleted={allItemsCompleted} toggleAllItems={toggleAllItems}></ToggleAll>
-                <TodoList todoItems={todoItems} toggleItem={toggleItem} removeItem={removeItem} editItem={editItem} saveItem={saveItem}/>
+                <TodoList todoItems={todoItems} toggleItem={toggleItem} removeItem={removeItem} editItem={editItem} saveItem={saveItem} cancelEdit={cancelEdit} />
               </section>
 
               <TodoFooter todoItems={todoItems} />
@@ -64,12 +64,12 @@ class ToggleAll extends Component {
 
 class TodoList extends Component {
   render() {
-    const { toggleItem, removeItem, editItem, saveItem, todoItems } = this.props;
+    const { toggleItem, removeItem, editItem, saveItem, cancelEdit, todoItems } = this.props;
     const todoItemRows = [];
 
     todoItems.forEach(function(todoItem, i) {
       todoItemRows.push(
-        <TodoItem key={todoItem.description} mode={todoItem.mode} description={todoItem.description} completed={todoItem.completed} toggleItem={_.partial(toggleItem, i)} removeItem={_.partial(removeItem, i)} editItem={_.partial(editItem, i)} saveItem={_.partial(saveItem, i)} />
+        <TodoItem key={todoItem.description} mode={todoItem.mode} description={todoItem.description} completed={todoItem.completed} toggleItem={_.partial(toggleItem, i)} removeItem={_.partial(removeItem, i)} editItem={_.partial(editItem, i)} saveItem={_.partial(saveItem, i)} cancelEdit={_.partial(cancelEdit, i)} />
       );
     });
 
@@ -86,7 +86,7 @@ class TodoItem extends Component {
     this.refs.edit.getDOMNode().focus(); 
   }
   render() {
-    const { completed, description, toggleItem, removeItem, editItem, saveItem, mode } = this.props;
+    const { completed, description, toggleItem, removeItem, editItem, saveItem, cancelEdit, mode } = this.props;
     const classes = classNames({
       completed: completed,
       editing: mode === "edit"
@@ -106,6 +106,15 @@ class TodoItem extends Component {
       }
     }
 
+    function handleKey(e) {
+      if (e.key === 'Enter') {
+        saveItem(e.target.value);
+      } else if (e.key === 'Escape') {
+        e.target.value = description;
+        cancelEdit();
+      }
+    }
+
     return (
       <li className={classes}>
         <div className="view">
@@ -113,7 +122,7 @@ class TodoItem extends Component {
           <label onDoubleClick={editItem}>{description}</label>
           <RemoveTodoItem removeItem={removeItem} />
         </div>
-        <input className="edit" ref="edit" defaultValue={description} onKeyDown={invokeOnEnter(invokeWithValue(saveItem))} onBlur={invokeWithValue(saveItem)}></input>
+        <input className="edit" ref="edit" defaultValue={description} onKeyDown={handleKey} onBlur={invokeWithValue(saveItem)}></input>
       </li>
     );
   }
