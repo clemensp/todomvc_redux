@@ -141,6 +141,7 @@ class TodoFooter extends Component {
     const { todoItems, clearCompletedItems } = this.props;
 
     const pendingItemCount = _.select(todoItems, function(i) { return !i.completed; }).length;
+    const completedItemCount = _.select(todoItems, function(i) { return i.completed; }).length;
 
     function message(itemCount) {
       if (itemCount === 1) {
@@ -154,7 +155,9 @@ class TodoFooter extends Component {
       <footer className="footer">
         <span className="todo-count"><strong>{pendingItemCount}</strong>{message(pendingItemCount)}</span>
         <TodoFilters />
-        <ClearCompleted clearCompletedItems={clearCompletedItems} />
+        {
+          completedItemCount > 0 ? <ClearCompleted clearCompletedItems={clearCompletedItems} /> : null
+        }
       </footer>
     );
   }
