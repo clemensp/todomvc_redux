@@ -1,8 +1,14 @@
-import { combineReducers } from 'redux';
 import todoItems from './todoItems';
+import allItemsCompleted from './allItemsCompleted';
 
-const rootReducer = combineReducers({
-  todoItems
-});
+function rootReducer(state = {todoItems: [], allItemsCompleted: false}, action) {
+  const withTodoItemUpdates = _.extend(
+    {},
+    state,
+    { todoItems: todoItems(state.todoItems, action) }
+  );
+
+  return allItemsCompleted(withTodoItemUpdates, action);
+};
 
 export default rootReducer;

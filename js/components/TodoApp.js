@@ -3,7 +3,7 @@ import _ from 'lodash';
 
 export default class TodoApp extends Component {
   render() {
-    const { addItem, toggleItem, removeItem, todoItems } = this.props;
+    const { addItem, toggleItem, removeItem, todoItems, allItemsCompleted, toggleAllItems } = this.props;
 
     return (
       <section className="todoapp">
@@ -16,7 +16,7 @@ export default class TodoApp extends Component {
           todoItems.length ? 
             <div>
               <section className="main">
-                <ToggleAll></ToggleAll>
+                <ToggleAll allItemsCompleted={allItemsCompleted} toggleAllItems={toggleAllItems}></ToggleAll>
                 <TodoList todoItems={todoItems} toggleItem={toggleItem} removeItem={removeItem} />
               </section>
 
@@ -50,9 +50,11 @@ class AddTodo extends Component {
 
 class ToggleAll extends Component {
   render() {
+    const { allItemsCompleted, toggleAllItems } = this.props;
+
     return (
       <div>
-        <input className="toggle-all" type="checkbox"></input>
+        <input className="toggle-all" type="checkbox" checked={allItemsCompleted} onChange={toggleAllItems}></input>
         <label htmlFor="toggle-all">Mark all as complete</label>
       </div>
     );
@@ -85,7 +87,7 @@ class TodoItem extends Component {
     return (
       <li className={completed ? "completed" : ""}>
         <div className="view">
-          <input className="toggle" type="checkbox" onChange={toggleItem}></input>
+          <input className="toggle" type="checkbox" checked={completed} onChange={toggleItem}></input>
           <label>{description}</label>
           <RemoveTodoItem removeItem={removeItem} />
         </div>
