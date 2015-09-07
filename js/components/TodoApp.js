@@ -4,7 +4,7 @@ import classNames from 'classnames';
 
 export default class TodoApp extends Component {
   render() {
-    const { addItem, toggleItem, removeItem, editItem, saveItem, cancelEdit, todoItems, allItemsCompleted, toggleAllItems } = this.props;
+    const { addItem, toggleItem, removeItem, editItem, saveItem, cancelEdit, todoItems, allItemsCompleted, toggleAllItems, clearCompletedItems } = this.props;
 
     return (
       <section className="todoapp">
@@ -21,7 +21,7 @@ export default class TodoApp extends Component {
                 <TodoList todoItems={todoItems} toggleItem={toggleItem} removeItem={removeItem} editItem={editItem} saveItem={saveItem} cancelEdit={cancelEdit} />
               </section>
 
-              <TodoFooter todoItems={todoItems} />
+              <TodoFooter todoItems={todoItems} clearCompletedItems={clearCompletedItems} />
             </div>
           : null
         }
@@ -138,7 +138,7 @@ class RemoveTodoItem extends Component {
 
 class TodoFooter extends Component {
   render() {
-    const { todoItems } = this.props;
+    const { todoItems, clearCompletedItems } = this.props;
 
     const pendingItemCount = _.select(todoItems, function(i) { return !i.completed; }).length;
 
@@ -154,7 +154,7 @@ class TodoFooter extends Component {
       <footer className="footer">
         <span className="todo-count"><strong>{pendingItemCount}</strong>{message(pendingItemCount)}</span>
         <TodoFilters />
-        <ClearCompleted />
+        <ClearCompleted clearCompletedItems={clearCompletedItems} />
       </footer>
     );
   }
@@ -180,8 +180,10 @@ class TodoFilters extends Component {
 
 class ClearCompleted extends Component {
   render() {
+    const { clearCompletedItems } = this.props;
+
     return (
-      <button className="clear-completed">Clear completed</button>
+      <button className="clear-completed" onClick={clearCompletedItems}>Clear completed</button>
     );
   }
 }

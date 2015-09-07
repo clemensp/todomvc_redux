@@ -1,4 +1,4 @@
-import { ADD_ITEM, TOGGLE_ITEM, REMOVE_ITEM, EDIT_ITEM, SAVE_ITEM, CANCEL_EDIT, TOGGLE_ALL_ITEMS } from '../actions/todo';
+import { ADD_ITEM, TOGGLE_ITEM, REMOVE_ITEM, EDIT_ITEM, SAVE_ITEM, CANCEL_EDIT, TOGGLE_ALL_ITEMS, CLEAR_COMPLETED_ITEMS } from '../actions/todo';
 import _ from 'lodash';
 
 export default function todoItems(state = [], action) {
@@ -45,12 +45,14 @@ export default function todoItems(state = [], action) {
           ...state.slice(action.index+1, state.length)
         ];
       }
-
-
     case TOGGLE_ALL_ITEMS:
       const allCompleted = _.all(state, s => s.completed );
       return _.map(state, function(s) {
         return _.extend({}, s, { completed: !allCompleted });
+      });
+    case CLEAR_COMPLETED_ITEMS:
+      return _.reject(state, function(i) {
+        return i.completed;
       });
     default:
       return state;

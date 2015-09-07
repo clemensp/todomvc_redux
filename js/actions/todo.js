@@ -5,6 +5,7 @@ export const EDIT_ITEM = 'EDIT_ITEM';
 export const SAVE_ITEM = 'SAVE_ITEM';
 export const CANCEL_EDIT = 'CANCEL_EDIT';
 export const TOGGLE_ALL_ITEMS = 'TOGGLE_ALL_ITEMS';
+export const CLEAR_COMPLETED_ITEMS = 'CLEAR_COMPLETED_ITEMS';
 
 export function addItem(description) {
   return {
@@ -52,6 +53,12 @@ export function saveItem(index, description) {
 export function toggleAllItems() {
   return {
     type: TOGGLE_ALL_ITEMS
+  };
+}
+
+export function clearCompletedItems() {
+  return {
+    type: CLEAR_COMPLETED_ITEMS
   };
 }
 
