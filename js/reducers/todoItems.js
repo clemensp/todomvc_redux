@@ -27,11 +27,20 @@ export default function todoItems(state = [], action) {
         ...state.slice(action.index+1, state.length)
       ];
     case SAVE_ITEM:
-      return [
-        ...state.slice(0, action.index),
-        _.assign({}, state[action.index], { mode: "show", description: action.description }),
-        ...state.slice(action.index+1, state.length)
-      ];
+      if (action.description.trim()) {
+        return [
+          ...state.slice(0, action.index),
+          _.assign({}, state[action.index], { mode: "show", description: action.description.trim() }),
+          ...state.slice(action.index+1, state.length)
+        ];
+      } else {
+        return [
+          ...state.slice(0, action.index),
+          ...state.slice(action.index+1, state.length)
+        ];
+      }
+
+
     case TOGGLE_ALL_ITEMS:
       const allCompleted = _.all(state, s => s.completed );
       return _.map(state, function(s) {
