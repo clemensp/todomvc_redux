@@ -137,21 +137,22 @@ class RemoveTodoItem extends Component {
 }
 
 class TodoFooter extends Component {
-  pendingTodoItems(todoItems) {
-    var pendingTodoItems = [];
-    todoItems.forEach(function(todoItem) {
-      if (!todoItem.completed) {
-        pendingTodoItems.push(todoItem);
-      }
-    });
-
-    return pendingTodoItems;
-  }
-
   render() {
+    const { todoItems } = this.props;
+
+    const pendingItemCount = _.select(todoItems, function(i) { return !i.completed; }).length;
+
+    function message(itemCount) {
+      if (itemCount === 1) {
+        return " item left";
+      } else {
+        return " items left";
+      }
+    }
+
     return (
       <footer className="footer">
-        <span className="todo-count"><strong>{this.pendingTodoItems(this.props.todoItems).length}</strong> item left</span>
+        <span className="todo-count"><strong>{pendingItemCount}</strong>{message(pendingItemCount)}</span>
         <TodoFilters />
         <ClearCompleted />
       </footer>
