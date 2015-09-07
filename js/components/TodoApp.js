@@ -92,10 +92,10 @@ class TodoItem extends Component {
       editing: mode === "edit"
     });
 
-    var invokeOnEnter = f => {
+    function invokeOnEnter(f) {
       return e => {
         if (e.key === 'Enter') {
-          f.call(null, e.target.value);
+          f.call(null, e);
         }
       }
     }
@@ -113,7 +113,7 @@ class TodoItem extends Component {
           <label onDoubleClick={editItem}>{description}</label>
           <RemoveTodoItem removeItem={removeItem} />
         </div>
-        <input className="edit" ref="edit" defaultValue={description} onKeyDown={invokeOnEnter(saveItem)} onBlur={invokeWithValue(saveItem)}></input>
+        <input className="edit" ref="edit" defaultValue={description} onKeyDown={invokeOnEnter(invokeWithValue(saveItem))} onBlur={invokeWithValue(saveItem)}></input>
       </li>
     );
   }
