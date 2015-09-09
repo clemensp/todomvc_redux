@@ -4,7 +4,7 @@ import classNames from 'classnames';
 
 export default class TodoApp extends Component {
   render() {
-    const { addItem, toggleItem, removeItem, editItem, saveItem, cancelEdit, todoItems, allItemsCompleted, toggleAllItems, clearCompletedItems } = this.props;
+    const { addItem, toggleItem, removeItem, editItem, saveItem, cancelEdit, todoItems, allItemsCompleted, toggleAllItems, clearCompletedItems, filter } = this.props;
 
     return (
       <section className="todoapp">
@@ -21,7 +21,7 @@ export default class TodoApp extends Component {
                 <TodoList todoItems={todoItems} toggleItem={toggleItem} removeItem={removeItem} editItem={editItem} saveItem={saveItem} cancelEdit={cancelEdit} />
               </section>
 
-              <TodoFooter todoItems={todoItems} clearCompletedItems={clearCompletedItems} />
+              <TodoFooter todoItems={todoItems} clearCompletedItems={clearCompletedItems} filter={filter} />
             </div>
           : null
         }
@@ -138,7 +138,7 @@ class RemoveTodoItem extends Component {
 
 class TodoFooter extends Component {
   render() {
-    const { todoItems, clearCompletedItems } = this.props;
+    const { todoItems, clearCompletedItems, filter } = this.props;
 
     const pendingItemCount = _.select(todoItems, function(i) { return !i.completed; }).length;
     const completedItemCount = _.select(todoItems, function(i) { return i.completed; }).length;
@@ -154,7 +154,7 @@ class TodoFooter extends Component {
     return (
       <footer className="footer">
         <span className="todo-count"><strong>{pendingItemCount}</strong>{message(pendingItemCount)}</span>
-        <TodoFilters />
+        <TodoFilters filter={filter} />
         {
           completedItemCount > 0 ? <ClearCompleted clearCompletedItems={clearCompletedItems} /> : null
         }
@@ -165,16 +165,18 @@ class TodoFooter extends Component {
 
 class TodoFilters extends Component {
   render() {
+    const { filter } = this.props;
+
     return (
       <ul className="filters">
         <li>
-          <a className="selected" href="#/">All</a>
+          <a className={classNames({selected: filter === "all"})} href="#/">All</a>
         </li>
         <li>
-          <a href="#/active">Active</a>
+          <a className={classNames({selected: filter === "active"})} href="#/active">Active</a>
         </li>
         <li>
-          <a href="#/completed">Completed</a>
+          <a className={classNames({selected: filter === "completed"})} href="#/completed">Completed</a>
         </li>
       </ul>
     );

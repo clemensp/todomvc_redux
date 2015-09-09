@@ -6,6 +6,7 @@ export const SAVE_ITEM = 'SAVE_ITEM';
 export const CANCEL_EDIT = 'CANCEL_EDIT';
 export const TOGGLE_ALL_ITEMS = 'TOGGLE_ALL_ITEMS';
 export const CLEAR_COMPLETED_ITEMS = 'CLEAR_COMPLETED_ITEMS';
+export const SET_FILTER = 'SET_FILTER';
 
 export function addItem(description) {
   return {
@@ -62,3 +63,9 @@ export function clearCompletedItems() {
   };
 }
 
+export function setFilter(filter) {
+  return {
+    type: SET_FILTER,
+    filter
+  };
+}
