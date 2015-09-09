@@ -1,4 +1,3 @@
-/* import { TOGGLE_ITEM } from '../actions/todo'; */
 import _ from 'lodash';
 
 export default function allItemsCompleted(state, action) {
