@@ -5,7 +5,8 @@ export default function todoItems(state = [], action) {
   switch(action.type) {
     case ADD_ITEM:
       if (action.description.trim()) {
-        return [...state, { description: action.description, mode: "show" }];
+        const newId = _.max([...(_.map(state, s => s.id)), -1]) + 1;
+        return [...state, { id: newId, description: action.description, mode: "show" }];
       } else {
         return state;
       }

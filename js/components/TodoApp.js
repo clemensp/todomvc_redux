@@ -18,7 +18,7 @@ export default class TodoApp extends Component {
             <div>
               <section className="main">
                 <ToggleAll allItemsCompleted={allItemsCompleted} toggleAllItems={toggleAllItems}></ToggleAll>
-                <TodoList todoItems={todoItems} toggleItem={toggleItem} removeItem={removeItem} editItem={editItem} saveItem={saveItem} cancelEdit={cancelEdit} />
+                <TodoList todoItems={todoItems} toggleItem={toggleItem} removeItem={removeItem} editItem={editItem} saveItem={saveItem} cancelEdit={cancelEdit} filter={filter} />
               </section>
 
               <TodoFooter todoItems={todoItems} clearCompletedItems={clearCompletedItems} filter={filter} />
@@ -62,14 +62,22 @@ class ToggleAll extends Component {
   }
 }
 
+const FILTERS = {
+  all: () => true,
+  active: todo => !todo.completed,
+  completed: todo => todo.completed
+};
+
 class TodoList extends Component {
   render() {
-    const { toggleItem, removeItem, editItem, saveItem, cancelEdit, todoItems } = this.props;
+    const { toggleItem, removeItem, editItem, saveItem, cancelEdit, todoItems, filter } = this.props;
     const todoItemRows = [];
 
-    todoItems.forEach(function(todoItem, i) {
+    const filteredTodoItems = _.select(todoItems, FILTERS[filter]);
+
+    filteredTodoItems.forEach(function(todoItem, i) {
       todoItemRows.push(
-        <TodoItem key={todoItem.description} mode={todoItem.mode} description={todoItem.description} completed={todoItem.completed} toggleItem={_.partial(toggleItem, i)} removeItem={_.partial(removeItem, i)} editItem={_.partial(editItem, i)} saveItem={_.partial(saveItem, i)} cancelEdit={_.partial(cancelEdit, i)} />
+        <TodoItem key={todoItem.id} mode={todoItem.mode} description={todoItem.description} completed={todoItem.completed} toggleItem={_.partial(toggleItem, i)} removeItem={_.partial(removeItem, i)} editItem={_.partial(editItem, i)} saveItem={_.partial(saveItem, i)} cancelEdit={_.partial(cancelEdit, i)} />
       );
     });
 
