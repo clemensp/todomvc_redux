@@ -8,7 +8,7 @@ export default function allItemsCompleted(state, action) {
         {},
         state,
         {
-          allItemsCompleted: _.all(state.todoItems, function(i) { return i.completed; })
+          allItemsCompleted: _.all(state.todoItems, todo => { return todo.completed; })
         }
       );
   }

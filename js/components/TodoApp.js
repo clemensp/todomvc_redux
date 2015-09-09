@@ -75,9 +75,9 @@ class TodoList extends Component {
 
     const filteredTodoItems = _.select(todoItems, FILTERS[filter]);
 
-    filteredTodoItems.forEach(function(todoItem, i) {
+    filteredTodoItems.forEach(function(todoItem) {
       todoItemRows.push(
-        <TodoItem key={todoItem.id} mode={todoItem.mode} description={todoItem.description} completed={todoItem.completed} toggleItem={_.partial(toggleItem, i)} removeItem={_.partial(removeItem, i)} editItem={_.partial(editItem, i)} saveItem={_.partial(saveItem, i)} cancelEdit={_.partial(cancelEdit, i)} />
+        <TodoItem key={todoItem.id} todoItem={todoItem} toggleItem={toggleItem} removeItem={removeItem} editItem={editItem} saveItem={saveItem} cancelEdit={cancelEdit} />
       );
     });
 
@@ -94,10 +94,10 @@ class TodoItem extends Component {
     this.refs.edit.getDOMNode().focus(); 
   }
   render() {
-    const { completed, description, toggleItem, removeItem, editItem, saveItem, cancelEdit, mode } = this.props;
+    const { todoItem, toggleItem, removeItem, editItem, saveItem, cancelEdit } = this.props;
     const classes = classNames({
-      completed: completed,
-      editing: mode === "edit"
+      completed: todoItem.completed,
+      editing: todoItem.mode === "edit"
     });
 
     function invokeOnEnter(f) {
@@ -114,23 +114,23 @@ class TodoItem extends Component {
       }
     }
 
-    function handleKey(e) {
+    function handleKey(e, id) {
       if (e.key === 'Enter') {
-        saveItem(e.target.value);
+        saveItem(id, e.target.value);
       } else if (e.key === 'Escape') {
-        e.target.value = description;
-        cancelEdit();
+        e.target.value = todoItem.description;
+        cancelEdit(id);
       }
     }
 
     return (
       <li className={classes}>
         <div className="view">
-          <input className="toggle" type="checkbox" checked={completed} onChange={toggleItem}></input>
-          <label onDoubleClick={editItem}>{description}</label>
-          <RemoveTodoItem removeItem={removeItem} />
+          <input className="toggle" type="checkbox" checked={todoItem.completed} onChange={() => toggleItem(todoItem.id)}></input>
+          <label onDoubleClick={() => editItem(todoItem.id)}>{todoItem.description}</label>
+          <RemoveTodoItem removeItem={() => removeItem(todoItem.id)} />
         </div>
-        <input className="edit" ref="edit" defaultValue={description} onKeyDown={handleKey} onBlur={invokeWithValue(saveItem)}></input>
+        <input className="edit" ref="edit" defaultValue={todoItem.description} onKeyDown={e => handleKey(e, todoItem.id)} onBlur={invokeWithValue(value => saveItem(todoItem.id, value))}></input>
       </li>
     );
   }

@@ -15,39 +15,39 @@ export function addItem(description) {
   };
 }
 
-export function toggleItem(index) {
+export function toggleItem(id) {
   return {
     type: TOGGLE_ITEM,
-    index
+    id
   };
 }
 
-export function removeItem(index) {
+export function removeItem(id) {
   return {
     type: REMOVE_ITEM,
-    index
+    id
   };
 }
 
-export function cancelEdit(index) {
+export function cancelEdit(id) {
   return {
     type: CANCEL_EDIT,
-    index
+    id
   };
 }
 
-export function editItem(index) {
+export function editItem(id) {
   return {
     type: EDIT_ITEM,
-    index
+    id
   };
 }
 
-export function saveItem(index, description) {
+export function saveItem(id, description) {
   return {
     type: SAVE_ITEM,
     description,
-    index
+    id
   };
 }
 
