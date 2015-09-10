@@ -18,12 +18,6 @@ export default function todoItems(todos = [], action) {
       });
     case REMOVE_ITEM:
       return _.reject(todos, todo => todo.id === action.id);
-    case EDIT_ITEM:
-      return _.map(todos, todo => {
-        return todo.id === action.id ?
-          _.assign({}, todo, { mode: "edit" }) :
-          todo
-      });
     case CANCEL_EDIT:
       return _.map(todos, todo => {
         return todo.id === action.id ?

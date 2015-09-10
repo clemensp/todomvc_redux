@@ -4,7 +4,7 @@ import classNames from 'classnames';
 
 export default class TodoApp extends Component {
   render() {
-    const { addItem, toggleItem, removeItem, editItem, saveItem, cancelEdit, todoItems, allItemsCompleted, toggleAllItems, clearCompletedItems, filter } = this.props;
+    const { addItem, toggleItem, removeItem, saveItem, todoItems, allItemsCompleted, toggleAllItems, clearCompletedItems, filter } = this.props;
 
     return (
       <section className="todoapp">
@@ -18,7 +18,7 @@ export default class TodoApp extends Component {
             <div>
               <section className="main">
                 <ToggleAll allItemsCompleted={allItemsCompleted} toggleAllItems={toggleAllItems}></ToggleAll>
-                <TodoList todoItems={todoItems} toggleItem={toggleItem} removeItem={removeItem} editItem={editItem} saveItem={saveItem} cancelEdit={cancelEdit} filter={filter} />
+                <TodoList todoItems={todoItems} toggleItem={toggleItem} removeItem={removeItem} saveItem={saveItem} filter={filter} />
               </section>
 
               <TodoFooter todoItems={todoItems} clearCompletedItems={clearCompletedItems} filter={filter} />
@@ -70,14 +70,14 @@ const FILTERS = {
 
 class TodoList extends Component {
   render() {
-    const { toggleItem, removeItem, editItem, saveItem, cancelEdit, todoItems, filter } = this.props;
+    const { toggleItem, removeItem, saveItem, todoItems, filter } = this.props;
     const todoItemRows = [];
 
     const filteredTodoItems = _.select(todoItems, FILTERS[filter]);
 
     filteredTodoItems.forEach(function(todoItem) {
       todoItemRows.push(
-        <TodoItem key={todoItem.id} todoItem={todoItem} toggleItem={toggleItem} removeItem={removeItem} editItem={editItem} saveItem={saveItem} cancelEdit={cancelEdit} />
+        <TodoItem key={todoItem.id} todoItem={todoItem} toggleItem={toggleItem} removeItem={removeItem} saveItem={saveItem} />
       );
     });
 
@@ -90,17 +90,40 @@ class TodoList extends Component {
 }
 
 class TodoItem extends Component {
+  constructor() {
+    super(arguments)
+    this.state = {
+      mode: "show"
+    };
+  }
+
   componentDidUpdate() {
     this.refs.edit.getDOMNode().focus(); 
   }
-  render() {
-    const { todoItem, toggleItem, removeItem, editItem, saveItem, cancelEdit } = this.props;
-    const classes = classNames({
-      completed: todoItem.completed,
-      editing: todoItem.mode === "edit"
-    });
 
-    function invokeOnEnter(f) {
+  render() {
+    const { todoItem, toggleItem, removeItem, saveItem } = this.props;
+
+    const classes = todoItem => {
+      return classNames({
+        completed: todoItem.completed,
+        editing: this.state.mode === "edit"
+      });
+    }
+
+    const toggleEdit = () => {
+      if (this.state.mode === "show") {
+        this.setState({
+          mode: "edit"
+        });
+      } else {
+        this.setState({
+          mode: "show"
+        });
+      }
+    }
+
+    const invokeOnEnter = f => {
       return e => {
         if (e.key === 'Enter') {
           f.call(null, e);
@@ -108,26 +131,27 @@ class TodoItem extends Component {
       }
     }
 
-    function invokeWithValue(f) {
+    const invokeWithValue = f => {
       return e => {
         f.call(null, e.target.value);
       }
     }
 
-    function handleKey(e, id) {
+    const handleKey = (e, id) => {
       if (e.key === 'Enter') {
         saveItem(id, e.target.value);
+        toggleEdit();
       } else if (e.key === 'Escape') {
         e.target.value = todoItem.description;
-        cancelEdit(id);
+        toggleEdit();
       }
     }
 
     return (
-      <li className={classes}>
+      <li className={classes(todoItem)}>
         <div className="view">
           <input className="toggle" type="checkbox" checked={todoItem.completed} onChange={() => toggleItem(todoItem.id)}></input>
-          <label onDoubleClick={() => editItem(todoItem.id)}>{todoItem.description}</label>
+          <label onDoubleClick={toggleEdit}>{todoItem.description}</label>
           <RemoveTodoItem removeItem={() => removeItem(todoItem.id)} />
         </div>
         <input className="edit" ref="edit" defaultValue={todoItem.description} onKeyDown={e => handleKey(e, todoItem.id)} onBlur={invokeWithValue(value => saveItem(todoItem.id, value))}></input>
