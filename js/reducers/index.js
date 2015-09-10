@@ -1,16 +1,10 @@
 import todoItems from './todoItems';
-import allItemsCompleted from './allItemsCompleted';
-import setFilter from './filter';
+import filter from './filter';
+import { combineReducers } from 'redux';
 
-function rootReducer(state = {todoItems: [], allItemsCompleted: false}, action) {
-  const withTodoItemUpdates = _.extend(
-    {},
-    state,
-    { filter: setFilter(state.filter, action) },
-    { todoItems: todoItems(state.todoItems, action) }
-  );
-
-  return allItemsCompleted(withTodoItemUpdates, action);
-};
+const rootReducer = combineReducers({
+  filter,
+  todoItems
+});
 
 export default rootReducer;

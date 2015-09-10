@@ -6,7 +6,6 @@ import * as TodoActions from '../actions/todo';
 function mapStateToProps(state) {
   return {
     todoItems: state.todoItems,
-    allItemsCompleted: state.allItemsCompleted,
     filter: state.filter
   };
 }

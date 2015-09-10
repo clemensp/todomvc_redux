@@ -9,7 +9,6 @@ import _ from 'lodash';
 // React components for Redux DevTools
 import { DevTools, DebugPanel, LogMonitor } from 'redux-devtools/lib/react';
 
-/* const setAllFilter = _.partial(store.dispatch, setFilter("all")); */
 const dispatchSetFilter = (filter = "all") => {
   store.dispatch(setFilter(filter));
 };

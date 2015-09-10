@@ -4,7 +4,7 @@ import classNames from 'classnames';
 
 export default class TodoApp extends Component {
   render() {
-    const { addItem, toggleItem, removeItem, saveItem, todoItems, allItemsCompleted, toggleAllItems, clearCompletedItems, filter } = this.props;
+    const { addItem, toggleItem, removeItem, saveItem, todoItems, toggleAllItems, clearCompletedItems, filter } = this.props;
 
     return (
       <section className="todoapp">
@@ -17,7 +17,7 @@ export default class TodoApp extends Component {
           todoItems.length ? 
             <div>
               <section className="main">
-                <ToggleAll allItemsCompleted={allItemsCompleted} toggleAllItems={toggleAllItems}></ToggleAll>
+                <ToggleAll todoItems={todoItems} toggleAllItems={toggleAllItems}></ToggleAll>
                 <TodoList todoItems={todoItems} toggleItem={toggleItem} removeItem={removeItem} saveItem={saveItem} filter={filter} />
               </section>
 
@@ -51,7 +51,8 @@ class AddTodo extends Component {
 
 class ToggleAll extends Component {
   render() {
-    const { allItemsCompleted, toggleAllItems } = this.props;
+    const { todoItems, toggleAllItems } = this.props;
+    const allItemsCompleted = _.all(todoItems, todo => todo.completed);
 
     return (
       <div>
