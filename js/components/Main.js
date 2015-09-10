@@ -94,20 +94,6 @@ class TodoItem extends Component {
       }
     }
 
-    const invokeOnEnter = f => {
-      return e => {
-        if (e.key === 'Enter') {
-          f.call(null, e);
-        }
-      }
-    }
-
-    const invokeWithValue = f => {
-      return e => {
-        f.call(null, e.target.value);
-      }
-    }
-
     const handleKey = (e, id) => {
       if (e.key === 'Enter') {
         saveItem(id, e.target.value);
@@ -118,6 +104,11 @@ class TodoItem extends Component {
       }
     }
 
+    const handleBlur = (e, id) => {
+      saveItem(id, e.target.value);
+      toggleEdit();
+    }
+
     return (
       <li className={classes(todoItem)}>
         <div className="view">
@@ -125,7 +116,7 @@ class TodoItem extends Component {
           <label onDoubleClick={toggleEdit}>{todoItem.description}</label>
           <RemoveTodoItem removeItem={() => removeItem(todoItem.id)} />
         </div>
-        <input className="edit" ref="edit" defaultValue={todoItem.description} onKeyDown={e => handleKey(e, todoItem.id)} onBlur={invokeWithValue(value => saveItem(todoItem.id, value))}></input>
+        <input className="edit" ref="edit" defaultValue={todoItem.description} onKeyDown={e => handleKey(e, todoItem.id)} onBlur={e => handleBlur(e, todoItem.id)}></input>
       </li>
     );
   }
