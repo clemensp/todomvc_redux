@@ -1,12 +1,12 @@
-# Framework Name • [TodoMVC](http://todomvc.com)
+# Redux • [TodoMVC](http://todomvc.com)
 
-> Official description of the framework (from its website)
+> Redux is a predictable state container for JavaScript apps.
 
 
 ## Resources
 
-- [Website]()
-- [Documentation]()
+- [Website](http://rackt.github.io/redux/)
+- [Documentation](http://rackt.github.io/redux/)
 - [Used by]()
 - [Blog]()
 - [FAQ]()
@@ -32,4 +32,4 @@ How was the app created? Anything worth sharing about the process of creating th
 
 ## Credit
 
-Created by [Your Name](http://your-website.com)
+Created by [Clemens Park](http://clemensp.com)
