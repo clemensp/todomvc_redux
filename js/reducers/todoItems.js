@@ -1,4 +1,4 @@
-import { ADD_ITEM, TOGGLE_ITEM, REMOVE_ITEM, EDIT_ITEM, SAVE_ITEM, CANCEL_EDIT, TOGGLE_ALL_ITEMS, CLEAR_COMPLETED_ITEMS } from '../actions/todo';
+import { ADD_ITEM, TOGGLE_ITEM, REMOVE_ITEM, EDIT_ITEM, SAVE_ITEM, CANCEL_EDIT, TOGGLE_ALL_ITEMS, CLEAR_COMPLETED_ITEMS } from '../constants/ActionTypes';
 import _ from 'lodash';
 
 export default function todoItems(todos = [], action) {
