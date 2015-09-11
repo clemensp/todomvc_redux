@@ -2,7 +2,7 @@
   "private": true,
   "scripts": {
     "start": "node server.js",
-    "lint": "eslint src"
+    "lint": "eslint js"
   },
   "keywords": [
     "react",
